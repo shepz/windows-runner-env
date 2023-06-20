@@ -1,0 +1,25 @@
+name: "zTest"
+
+on:
+  push:
+
+jobs:
+  build-release:
+    strategy:
+      fail-fast: false
+      matrix:
+        runners:
+          - ubuntu-latest
+          - macos-latest
+          - macOS-arm64
+          - windows-2019
+    runs-on: ${{ matrix.runners }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: set version
+        shell: bash
+        run: echo "TELEPRESENCE_VERSION=${{ github.ref_name }}" >> $GITHUB_ENV
+      - name: echo version
+        run: echo $TELEPRESENCE_VERSION
